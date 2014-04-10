@@ -58,6 +58,7 @@ public class GameRules {
                 Resultat = getAnzahlFreeGrids(resGrid);
                 Resultat += score;
                 zaehler = 0;
+                Resultat += berechneZusatzPunkte(clone2DArray(resGrid));
                 Resultat += simulateFutureMove(resGrid);
             } else {//wenn nichts passiert ist gib einen negativen Wert zurück
                 Resultat = -100;
@@ -219,6 +220,17 @@ public class GameRules {
         return grid;
     }
 
+    private double berechneZusatzPunkte(int grid[][]) {
+        double Resultat = 0;
+        for (int i = 1; i <= 4; i++) {
+            for (int index = 1; i <= 4; i++) {
+                Resultat += ((grid[i - 1][index - 1]) / index) / i;
+            }
+        }
+//        Resultat+=grid[0][0];
+        return Resultat;
+    }
+
     /**
      * @param grid
      * @return the number of Free Grids.
@@ -316,6 +328,7 @@ public class GameRules {
                     if (gridChanged(resGrid, testGrid)) {//wenn sich was geändert hat
                         Resultat += score;//simuliere weiter und speichere das Resultat
                         Resultat += getAnzahlFreeGrids(resGrid) * (multi);
+                        Resultat += berechneZusatzPunkte(clone2DArray(resGrid)) / Math.pow(2, zaehler);
                         Resultat += simulateFutureMove(resGrid);
                         zaehler--;
                     } else {//wenn nicht gib einen negativen Wert zurück der mit zunähmender Tiefe an Gewichtung verliert
@@ -326,7 +339,8 @@ public class GameRules {
                     }
                 }
             }
-        }
-        return bestResultat;//liefere das beste Resultat zurück
+        }//liefere das beste Resultat zurück
+        return bestResultat / zaehler;
+//        return bestResultat/Math.pow(2, zaehler);
     }
 }

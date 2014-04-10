@@ -65,7 +65,7 @@ public class AutoSolver extends Thread {
             gameGui.nextMove(direction);
             ende = game.getEnde();
             try {
-                Thread.sleep(500);
+//                Thread.sleep(500);
             } catch (Exception ex) {
                 interrupt();
                 break;
